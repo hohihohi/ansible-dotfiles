@@ -1,10 +1,22 @@
 #!/usr/bin/env bash
-# Available OS: Linux, MacOS 
+
 
 # Definitions and variables
 readonly SHOULD_UPGRADE_PIP=false
 readonly SHOULD_UPGRADE_ANSIBLE=true
 
+# Exit shell script immediately if failed and trace it
+set -xe
+# Available OS: Linux, MacOS
+if [ "$(uname)" == 'Darwin' ]; then
+  OS='Mac'
+#elif [ $(expr substr "$os_name" 1 5) == 'Linux' ]; then
+elif [ "$(printf %s, "$(uname -s)" | cut -c 1-5)" == 'Linux' ]; then
+  OS='Linux'
+else
+  echo "Your platform ($(uname -a)) is not supported."
+  exit 1
+fi
 
 # Installing pip
 ## To verify whether Python is already installed on your local system
@@ -25,6 +37,14 @@ if [ "${SHOULD_UPGRADE_PIP}" ]; then
     echo 'Upgarde pip if possible'
     python3 -m ensurepip --upgrade >/dev/null
 fi
+## Set systems python path
+if test $OS = 'Mac'; then
+    #python_version=$(ls "$HOME"/Library/Python/ | grep -e '3.*')
+    python_version=$(find "$HOME"/Library/Python -type d -maxdepth 1 -not -name './*' | grep "$HOME"/Library/Python/)
+    export PATH="$HOME/Library/Python/${python_version}/bin:$PATH"
+else
+    export PATH="$HOME/.local/bin:$PATH"
+fi
 
 # Installing Ansible
 ## To verify whether ansible is already installed on your preferred Python
@@ -39,4 +59,5 @@ if [ "${SHOULD_UPGRADE_ANSIBLE}" ]; then
     echo 'Upgarde ansible if possible'
     python3 -m pip install --upgrade --user ansible >/dev/null
 fi
-python3 -m pip show ansible
+python3 -m pip list -v | grep ansible
+ansible --version
