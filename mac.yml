@@ -1,0 +1,125 @@
+---
+## This playbook deploys the whole application stack
+
+# Apply common configuration to all hosts
+- hosts: all
+  homebrew_installed_packages:
+    - oath-toolkit
+    - graphviz
+    - mycli
+  homebrew_cask_apps:
+    - iterm2
+    - google-japanese-ime
+    - google-chrome
+    - intellij-idea
+    - slack
+    - zoom
+    - keka
+    - app-cleaner
+    - kindle
+    - clipy
+    - spectacles
+    - deepl
+    - alfred
+  roles:
+    - geerlingguy.mac.homebrew
+    - geerlingguy.mac.mas
+  tags:
+    - mac
+
+## Apply common configuration to all hosts
+## curl, tree, wget, awk, jq
+#- hosts: all
+#  roles:
+#    - common
+#  tags:
+#    - common
+#
+## Configure about zsh and deploy it
+#- hosts: all
+#  roles:
+#    - zsh
+#  tags:
+#    - zsh
+#
+## Configure about git and deploy it
+#- hosts: all
+#  roles:
+#    - git
+#  tags:
+#    - git
+#
+## Configure about ghq and deploy it
+#- hosts: all
+#  roles:
+#    - ghq
+#  tags:
+#    - ghq
+#
+## Configure about tmux and deploy it
+#- hosts: all
+#  roles:
+#    - tmux
+#  tags:
+#    - tmux
+#
+## Configure about vim and deploy it
+#- hosts: all
+#  roles:
+#    - vim
+#  tags:
+#    - vim
+#
+## Configure about docker and deploy it
+#- hosts: all
+#  roles:
+#    - docker
+#  tags:
+#    - docker
+#
+## Configure about motd and deploy it
+#- hosts: all
+#  roles:
+#    - motd
+#  tags:
+#    - motd
+#
+## Configure about language and deploy it
+#- hosts: all
+#  roles:
+#    - asdf
+#  tags:
+#    - asdf
+#    - language
+#
+## Configure about python and deploy it
+#- hosts: all
+#  roles:
+#    - python
+#  tags:
+#    - python
+#    - language
+#
+## Configure about golang and deploy it
+#- hosts: all
+#  roles:
+#    - golang
+#  tags:
+#    - golang
+#    - language
+#
+## Configure about typescript and deploy it
+#- hosts: all
+#  roles:
+#    - typescript
+#  tags:
+#    - typescript
+#    - language
+#
+## Configure about terraform and deploy it
+#- hosts: all
+#  roles:
+#    - terraform
+#  tags:
+#    - terraform
+#    - language
