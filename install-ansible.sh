@@ -4,6 +4,7 @@
 # Definitions and variables
 readonly SHOULD_UPGRADE_PIP=false
 readonly SHOULD_UPGRADE_ANSIBLE=true
+readonly SHOULD_UPGRADE_ANSIBLE_LINT=true
 
 # Exit shell script immediately if failed and trace it
 set -xe
@@ -56,8 +57,22 @@ if test $? -ne 0; then
 fi
 ## To upgrade ansible if you want
 if [ "${SHOULD_UPGRADE_ANSIBLE}" ]; then
-    echo 'Upgarde ansible if possible'
+    echo 'Upgrade ansible if possible'
     python3 -m pip install --upgrade --user ansible >/dev/null
 fi
 python3 -m pip list -v | grep ansible
 ansible --version
+
+# Installing Ansible-lint
+has_ansible_lint=$(python3 -m pip show ansible-lint | grep -c 'Name: ansible-lint')
+if test "$has_ansible_lint" -ne 1; then
+    ## To enable a user to execute ansible-lint command if its command was not found
+    echo 'Not found ansible-lint command and install it'
+    python3 -m pip install --user ansible-lint >/dev/null
+fi
+## To upgrade ansible-lint if you want
+if [ "${SHOULD_UPGRADE_ANSIBLE_LINT}" ]; then
+    echo 'Upgrade ansible-lint if possible'
+    python3 -m pip install --upgrade --user ansible-lint >/dev/null
+fi
+python3 -m pip show ansible-lint
