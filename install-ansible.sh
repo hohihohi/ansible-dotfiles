@@ -41,24 +41,24 @@ fi
 ## Set systems python path
 if test $OS = 'Mac'; then
     #python_version=$(ls "$HOME"/Library/Python/ | grep -e '3.*')
-    python_version=$(find "$HOME"/Library/Python -type d -maxdepth 1 -not -name './*' | grep "$HOME"/Library/Python/)
+    python_version=$(find "$HOME"/Library/Python -type d -maxdepth 1 -not -name './*' | grep -o '[1-9].[1-9]*')
     export PATH="$HOME/Library/Python/${python_version}/bin:$PATH"
 else
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
-# Installing Ansible
-## To verify whether ansible is already installed on your preferred Python
+# Installing Ansible-base
+## To verify whether ansible-base is already installed on your preferred Python
 ansible --version >/dev/null 2>&1
 if test $? -ne 0; then
-    ## To enable a user to execute ansible command if its command was not found
+    ## To enable a user to execute ansible-base command if its command was not found
     echo 'Not found ansible command and install it'
-    python3 -m pip install --user ansible >/dev/null
+    python3 -m pip install --user ansible-base >/dev/null
 fi
-## To upgrade ansible if you want
+## To upgrade ansible-base if you want
 if [ "${SHOULD_UPGRADE_ANSIBLE}" ]; then
-    echo 'Upgrade ansible if possible'
-    python3 -m pip install --upgrade --user ansible >/dev/null
+    echo 'Upgrade ansible-base if possible'
+    python3 -m pip install --upgrade --user ansible-base >/dev/null
 fi
 python3 -m pip list -v | grep ansible
 ansible --version
